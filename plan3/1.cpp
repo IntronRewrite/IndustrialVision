@@ -1,3 +1,11 @@
+/*聚类+对齐+4pcs
+ * @Author: IntronRewrite weijiehe@sdust.edu.com
+ * @Date: 2024-11-25 04:22:10
+ * @LastEditors: IntronRewrite weijiehe@sdust.edu.com
+ * @LastEditTime: 2024-11-25 06:05:39
+ * @FilePath: /IndustrialVision/plan3/1.cpp
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 #include <iostream>
 #include <vector>
 #include <Eigen/Dense>
@@ -31,65 +39,65 @@ int main() {
 
     
 
-    // auto start_clustering = std::chrono::high_resolution_clock::now();
+    auto start_clustering = std::chrono::high_resolution_clock::now();
 
-    // // 移除离群点并进行DBSCAN聚类
-    // std::vector<int> labels = pcd_src->ClusterDBSCAN(avg_dist * 4.2, 1, true);
-    // int max_label = *std::max_element(labels.begin(), labels.end());
-    // std::cout << "点云有 " << max_label + 1 << " 个聚类" << std::endl;
+    // 移除离群点并进行DBSCAN聚类
+    std::vector<int> labels = pcd_src->ClusterDBSCAN(avg_dist * 4.2, 1, true);
+    int max_label = *std::max_element(labels.begin(), labels.end());
+    std::cout << "点云有 " << max_label + 1 << " 个聚类" << std::endl;
 
-    // // 为每个聚类分配固定颜色
-    // std::vector<Eigen::Vector3d> colors(pcd_src->points_.size(), Eigen::Vector3d(0, 0, 0));
-    // std::vector<Eigen::Vector3d> cluster_colors(max_label + 1);
-    // std::default_random_engine generator;
-    // std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    // 为每个聚类分配固定颜色
+    std::vector<Eigen::Vector3d> colors(pcd_src->points_.size(), Eigen::Vector3d(0, 0, 0));
+    std::vector<Eigen::Vector3d> cluster_colors(max_label + 1);
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
-    // for (int i = 0; i <= max_label; ++i) {
-    //     cluster_colors[i] = Eigen::Vector3d(distribution(generator), distribution(generator), distribution(generator));
-    // }
+    for (int i = 0; i <= max_label; ++i) {
+        cluster_colors[i] = Eigen::Vector3d(distribution(generator), distribution(generator), distribution(generator));
+    }
 
-    // for (size_t i = 0; i < labels.size(); ++i) {
-    //     if (labels[i] >= 0) {
-    //         colors[i] = cluster_colors[labels[i]];
-    //     }
-    // }
-    // pcd_src->colors_ = colors;
-    // std::cout << "欧式聚类成功" << std::endl;
+    for (size_t i = 0; i < labels.size(); ++i) {
+        if (labels[i] >= 0) {
+            colors[i] = cluster_colors[labels[i]];
+        }
+    }
+    pcd_src->colors_ = colors;
+    std::cout << "欧式聚类成功" << std::endl;
 
-    // // 可视化聚类结果
-    // // open3d::visualization::DrawGeometries({pcd_src}, "聚类结果", 1600, 900);
-    // std::cout << "聚类结果可视化成功" << std::endl;
+    // 可视化聚类结果
+    // open3d::visualization::DrawGeometries({pcd_src}, "聚类结果", 1600, 900);
+    std::cout << "聚类结果可视化成功" << std::endl;
 
-    // // 找到数量最多的聚类
-    // std::vector<int> cluster_sizes(max_label + 1, 0);
-    // for (int label : labels) {
-    //     if (label >= 0) {
-    //         cluster_sizes[label]++;
-    //     }
-    // }
-    // int largest_cluster_label = std::distance(cluster_sizes.begin(), std::max_element(cluster_sizes.begin(), cluster_sizes.end()));
-    // std::cout << "数量最多的聚类标签: " << largest_cluster_label << std::endl;
+    // 找到数量最多的聚类
+    std::vector<int> cluster_sizes(max_label + 1, 0);
+    for (int label : labels) {
+        if (label >= 0) {
+            cluster_sizes[label]++;
+        }
+    }
+    int largest_cluster_label = std::distance(cluster_sizes.begin(), std::max_element(cluster_sizes.begin(), cluster_sizes.end()));
+    std::cout << "数量最多的聚类标签: " << largest_cluster_label << std::endl;
 
-    // // 找到数量最多的聚类的索引
-    // std::vector<int> largest_cluster_indices;
-    // for (size_t i = 0; i < labels.size(); ++i) {
-    //     if (labels[i] == largest_cluster_label) {
-    //         largest_cluster_indices.push_back(i);
-    //     }
-    // }
+    // 找到数量最多的聚类的索引
+    std::vector<int> largest_cluster_indices;
+    for (size_t i = 0; i < labels.size(); ++i) {
+        if (labels[i] == largest_cluster_label) {
+            largest_cluster_indices.push_back(i);
+        }
+    }
 
-    // // 保留数量最多的聚类
-    // std::vector<size_t> largest_cluster_indices_size_t(largest_cluster_indices.begin(), largest_cluster_indices.end());
-    // pcd_src = pcd_src->SelectByIndex(largest_cluster_indices_size_t);
-    // std::cout << "保留数量最多的聚类成功" << std::endl;
+    // 保留数量最多的聚类
+    std::vector<size_t> largest_cluster_indices_size_t(largest_cluster_indices.begin(), largest_cluster_indices.end());
+    pcd_src = pcd_src->SelectByIndex(largest_cluster_indices_size_t);
+    std::cout << "保留数量最多的聚类成功" << std::endl;
 
-    // auto end_clustering = std::chrono::high_resolution_clock::now();
-    // std::chrono::duration<double> elapsed_clustering = end_clustering - start_clustering;
-    // std::cout << "聚类运行时间: " << elapsed_clustering.count() << " 秒" << std::endl;
+    auto end_clustering = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_clustering = end_clustering - start_clustering;
+    std::cout << "聚类运行时间: " << elapsed_clustering.count() << " 秒" << std::endl;
 
-    // // 可视化数量最多的聚类
-    // // open3d::visualization::DrawGeometries({pcd_src}, "数量最多的聚类", 1600, 900);
-    // std::cout << "数量最多的聚类可视化成功" << std::endl;
+    // 可视化数量最多的聚类
+    // open3d::visualization::DrawGeometries({pcd_src}, "数量最多的聚类", 1600, 900);
+    std::cout << "数量最多的聚类可视化成功" << std::endl;
 
 
 
@@ -143,8 +151,35 @@ int main() {
 
     // 可视化旋转对齐后的点云和定向边界框
     open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "旋转对齐后的点云和定向边界框可视化", 1600, 900);
-    std::cout << "旋转对齐后的点云和定向边界框可视化成功" << std::endl;
+    
+    // 计算边界框的长轴
+    Eigen::Vector3d src_extent = src_oriented_bounding_box.extent_;
+    Eigen::Vector3d ref_extent = ref_oriented_bounding_box.extent_;
+    Eigen::Vector3d src_long_axis, ref_long_axis;
 
+    if (src_extent.x() > src_extent.y() && src_extent.x() > src_extent.z()) {
+        src_long_axis = src_oriented_bounding_box.R_.col(0);
+    } else if (src_extent.y() > src_extent.x() && src_extent.y() > src_extent.z()) {
+        src_long_axis = src_oriented_bounding_box.R_.col(1);
+    } else {
+        src_long_axis = src_oriented_bounding_box.R_.col(2);
+    }
+
+    if (ref_extent.x() > ref_extent.y() && ref_extent.x() > ref_extent.z()) {
+        ref_long_axis = ref_oriented_bounding_box.R_.col(0);
+    } else if (ref_extent.y() > ref_extent.x() && ref_extent.y() > ref_extent.z()) {
+        ref_long_axis = ref_oriented_bounding_box.R_.col(1);
+    } else {
+        ref_long_axis = ref_oriented_bounding_box.R_.col(2);
+    }
+
+    // 计算旋转矩阵，使src长轴旋转180度
+    Eigen::Matrix3d rotation_180 = Eigen::AngleAxisd(M_PI, src_long_axis.normalized()).toRotationMatrix();
+    pcd_src->Rotate(rotation_180, Eigen::Vector3d(0, 0, 0));
+    src_oriented_bounding_box.Rotate(rotation_180, Eigen::Vector3d(0, 0, 0));
+    std::cout << "src点云和定向边界框已绕长轴旋转180度" << std::endl;
+    std::cout << "旋转对齐后的点云和定向边界框可视化成功" << std::endl;
+    open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "旋转对齐后的点云和定向边界框可视化", 1600, 900);
 
     // 4PCS配准
     auto start_4pcs = std::chrono::high_resolution_clock::now();
