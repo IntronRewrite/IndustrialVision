@@ -1,3 +1,10 @@
 *.ply
 *.stl
 .stl
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+/build/**
+**/build/
