@@ -1,8 +1,8 @@
 '''
 Author: He Weijie 129854778+IntronRewrite@users.noreply.github.com
 Date: 2024-11-24 14:21:57
-LastEditors: He Weijie 129854778+IntronRewrite@users.noreply.github.com
-LastEditTime: 2024-11-24 17:19:06
+LastEditors: IntronRewrite weijiehe@sdust.edu.com
+LastEditTime: 2024-11-25 03:34:05
 FilePath: \IndustrialVision\plan1\1.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -86,14 +86,18 @@ pcd_ref.translate(-ref_center)
 ref_oriented_bounding_box.translate(-ref_center)
 
 
-# o3d.visualization.draw_geometries([pcd_src, src_oriented_bounding_box,pcd_ref, ref_oriented_bounding_box])
+o3d.visualization.draw_geometries([pcd_src, src_oriented_bounding_box,pcd_ref, ref_oriented_bounding_box])
 print('ref点云和定向边界框已移动到原点')
 print('src点云和定向边界框已移动到原点')
+
 
 
 # 计算src和ref定向边界框的旋转矩阵
 src_rotation = src_oriented_bounding_box.R
 ref_rotation = ref_oriented_bounding_box.R
+print(src_rotation)
+print(ref_rotation)
+
 
 # 将src点云和定向边界框旋转到与ref对齐
 pcd_src.rotate(ref_rotation @ np.linalg.inv(src_rotation), center=(0, 0, 0))

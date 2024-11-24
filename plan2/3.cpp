@@ -2,7 +2,7 @@
  * @Author: IntronRewrite weijiehe@sdust.edu.com
  * @Date: 2024-11-24 23:20:59
  * @LastEditors: IntronRewrite weijiehe@sdust.edu.com
- * @LastEditTime: 2024-11-25 02:47:56
+ * @LastEditTime: 2024-11-25 04:10:16
  * @FilePath: /IndustrialVision/plan2/3.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -60,8 +60,8 @@ int main() {
     std::cout << "欧式聚类成功" << std::endl;
 
     // 可视化聚类结果
-    // open3d::visualization::DrawGeometries({pcd_src}, "聚类结果", 1600, 900);
-    // std::cout << "聚类结果可视化成功" << std::endl;
+    open3d::visualization::DrawGeometries({pcd_src}, "聚类结果", 1600, 900);
+    std::cout << "聚类结果可视化成功" << std::endl;
 
     // 找到数量最多的聚类
     std::vector<int> cluster_sizes(max_label + 1, 0);
@@ -109,7 +109,7 @@ int main() {
     std::cout << "获取ref定向边界框成功" << std::endl;
 
     // 可视化定向边界框
-    // open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "定向边界框可视化", 1600, 900);
+    open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "定向边界框可视化", 1600, 900);
     std::cout << "定向边界框可视化成功" << std::endl;
 
     // 将pcd_ref颜色设置为单一颜色（例如红色）
@@ -125,12 +125,16 @@ int main() {
     std::cout << "点云和定向边界框已移动到原点" << std::endl;
 
     // 可视化平移后的点云和定向边界框
-    // open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "平移后的点云和定向边界框可视化", 1600, 900);
+    open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "平移后的点云和定向边界框可视化", 1600, 900);
     std::cout << "平移后的点云和定向边界框可视化成功" << std::endl;
 
     // 旋转src以对齐ref
     Eigen::Matrix3d src_rotation = src_oriented_bounding_box.R_;
     Eigen::Matrix3d ref_rotation = ref_oriented_bounding_box.R_;
+    
+    std::cout << "src_rotation:" << std::endl << src_rotation << std::endl;
+    std::cout << "ref_rotation:" << std::endl << ref_rotation << std::endl;
+
     Eigen::Matrix3d rotation = ref_rotation * src_rotation.inverse();
     pcd_src->Rotate(rotation, Eigen::Vector3d(0, 0, 0));
     src_oriented_bounding_box.Rotate(rotation, Eigen::Vector3d(0, 0, 0));
