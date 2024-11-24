@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "debugpy",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${file}",
+            "args": [],
+            "justMyCode": true
+        },
+        {
+            "type": "debugpy",
+            "request": "launch",
+            "name": "Launch with Arguments",
+            "program": "${file}",
+            "args": ["${input:programArgs}"],
+            "justMyCode": true
+        }
+    ],
+    "inputs": [
+        {
+            "id": "programArgs",
+            "type": "promptString",
+            "description": "Enter program arguments",
+            "default": ""
+        }
+    ]
+}
