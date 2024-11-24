@@ -17,7 +17,7 @@ def compute_average_distance(pcd):
 
 
 
-pcd_ref = o3d.io.read_point_cloud(r'F:\cloud\ref_model.ply')
+pcd_ref = o3d.io.read_point_cloud(r'..\ref_model.ply')
 print('读取ref点云数据成功')
 
 #对src聚类

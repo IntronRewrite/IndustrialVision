@@ -1,3 +1,11 @@
+'''
+Author: He Weijie 129854778+IntronRewrite@users.noreply.github.com
+Date: 2024-11-24 14:21:57
+LastEditors: He Weijie 129854778+IntronRewrite@users.noreply.github.com
+LastEditTime: 2024-11-24 17:19:06
+FilePath: \IndustrialVision\plan1\1.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 import time
 import open3d as o3d
 import numpy as np
@@ -10,9 +18,9 @@ def compute_average_distance(pcd):
     return avg_dist
 
 
-pcd_src = o3d.io.read_point_cloud(r'F:\cloud\src_model.ply')
+pcd_src = o3d.io.read_point_cloud(r'..\src_model.ply')
 print('读取src点云数据成功')
-pcd_ref = o3d.io.read_point_cloud(r'F:\cloud\ref_model.ply')
+pcd_ref = o3d.io.read_point_cloud(r'..\ref_model.ply')
 print('读取ref点云数据成功')
 
 start_time = time.time()
