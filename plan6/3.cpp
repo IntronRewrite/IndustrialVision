@@ -2,7 +2,7 @@
  * @Author: IntronRewrite weijiehe@sdust.edu.com
  * @Date: 2024-11-26 01:58:36
  * @LastEditors: IntronRewrite weijiehe@sdust.edu.com
- * @LastEditTime: 2024-11-26 02:17:10
+ * @LastEditTime: 2024-11-26 04:03:30
  * @FilePath: /plan6/3.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -56,9 +56,9 @@ int main(){
     
 
     Eigen::Matrix4d transformation_matrix;
-    transformation_matrix << -0.131427, -0.99108, -0.022091, -840.68,
-                              0.722204, -0.110989, 0.682717, -31.0836,
-                              0.679079, -0.0737735, -0.730349, 3527.89,
+    transformation_matrix << -0.00270123, 0.999949, 0.00970194, -465.41,
+                              -0.800994, -0.00797185, 0.59862, -1821.09,
+                              -0.598667, 0.00615418, -0.800975, 5656.34,
                               0, 0, 0, 1;
 
     pcd_src->Transform(transformation_matrix);

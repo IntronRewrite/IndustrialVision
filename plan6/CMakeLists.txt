@@ -26,3 +26,8 @@ target_link_libraries(${EXECUTABLE_NAME_2} ${PCL_LIBRARIES} ${Boost_LIBRARIES} O
 set(EXECUTABLE_NAME_3 "3")
 add_executable(${EXECUTABLE_NAME_3} 3.cpp)
 target_link_libraries(${EXECUTABLE_NAME_3} Open3D::Open3D)
+
+# 添加第二个可执行文件
+set(EXECUTABLE_NAME_4 "4")
+add_executable(${EXECUTABLE_NAME_4} 4.cpp)
+target_link_libraries(${EXECUTABLE_NAME_4} ${PCL_LIBRARIES} ${Boost_LIBRARIES} Open3D::Open3D)

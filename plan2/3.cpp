@@ -2,7 +2,7 @@
  * @Author: IntronRewrite weijiehe@sdust.edu.com
  * @Date: 2024-11-24 23:20:59
  * @LastEditors: IntronRewrite weijiehe@sdust.edu.com
- * @LastEditTime: 2024-11-25 04:10:16
+ * @LastEditTime: 2024-11-26 06:51:50
  * @FilePath: /IndustrialVision/plan2/3.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -91,7 +91,7 @@ int main() {
     std::cout << "聚类运行时间: " << elapsed_clustering.count() << " 秒" << std::endl;
 
     // 可视化数量最多的聚类
-    open3d::visualization::DrawGeometries({pcd_src}, "数量最多的聚类", 1600, 900);
+    //open3d::visualization::DrawGeometries({pcd_src}, "数量最多的聚类", 1600, 900);
     std::cout << "数量最多的聚类可视化成功" << std::endl;
 
 
@@ -109,7 +109,7 @@ int main() {
     std::cout << "获取ref定向边界框成功" << std::endl;
 
     // 可视化定向边界框
-    open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "定向边界框可视化", 1600, 900);
+    //open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "定向边界框可视化", 1600, 900);
     std::cout << "定向边界框可视化成功" << std::endl;
 
     // 将pcd_ref颜色设置为单一颜色（例如红色）
@@ -125,7 +125,7 @@ int main() {
     std::cout << "点云和定向边界框已移动到原点" << std::endl;
 
     // 可视化平移后的点云和定向边界框
-    open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "平移后的点云和定向边界框可视化", 1600, 900);
+    //open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "平移后的点云和定向边界框可视化", 1600, 900);
     std::cout << "平移后的点云和定向边界框可视化成功" << std::endl;
 
     // 旋转src以对齐ref
@@ -145,26 +145,26 @@ int main() {
     std::cout << "粗配准运行时间: " << elapsed.count() << " 秒" << std::endl;
 
     // 可视化旋转对齐后的点云和定向边界框
-    open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "旋转对齐后的点云和定向边界框可视化", 1600, 900);
+    //open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "旋转对齐后的点云和定向边界框可视化", 1600, 900);
     std::cout << "旋转对齐后的点云和定向边界框可视化成功" << std::endl;
 
 
 
-    // // 使用ICP进行精配准
-    // double threshold = 1.0;
-    // Eigen::Matrix4d trans_init = Eigen::Matrix4d::Identity();
-    // auto reg_p2p = open3d::pipelines::registration::RegistrationICP(
-    //     *pcd_src, *pcd_ref, threshold, trans_init,
-    //     open3d::pipelines::registration::TransformationEstimationPointToPoint()
-    // );
-    // Eigen::Matrix4d transformation_icp = reg_p2p.transformation_;
-    // std::cout << "ICP 变换矩阵:" << std::endl << transformation_icp << std::endl;
+    // 使用ICP进行精配准
+    double threshold = 1.0;
+    Eigen::Matrix4d trans_init = Eigen::Matrix4d::Identity();
+    auto reg_p2p = open3d::pipelines::registration::RegistrationICP(
+        *pcd_src, *pcd_ref, threshold, trans_init,
+        open3d::pipelines::registration::TransformationEstimationPointToPoint()
+    );
+    Eigen::Matrix4d transformation_icp = reg_p2p.transformation_;
+    std::cout << "ICP 变换矩阵:" << std::endl << transformation_icp << std::endl;
 
-    // // 应用变换
-    // pcd_src->Transform(transformation_icp);
-    // std::cout << "src点云和ref点云精配准成功" << std::endl;
+    // 应用变换
+    pcd_src->Transform(transformation_icp);
+    std::cout << "src点云和ref点云精配准成功" << std::endl;
 
-    // // 可视化结果
-    // open3d::visualization::DrawGeometries({pcd_src, pcd_ref});
+    // 可视化结果
+    open3d::visualization::DrawGeometries({pcd_src, pcd_ref});
     return 0;
 }

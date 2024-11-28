@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             // 重点 可执行文件路径
-            "program": "${workspaceFolder}/build/1",
+            "program": "${workspaceFolder}/build/3",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

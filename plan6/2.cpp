@@ -2,7 +2,7 @@
  * @Author: IntronRewrite weijiehe@sdust.edu.com
  * @Date: 2024-11-25 20:01:17
  * @LastEditors: IntronRewrite weijiehe@sdust.edu.com
- * @LastEditTime: 2024-11-26 03:20:53
+ * @LastEditTime: 2024-11-26 07:14:10
  * @FilePath: /plan5/2.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -33,8 +33,8 @@ double ComputeAverageDistance(const std::shared_ptr<open3d::geometry::PointCloud
 
 int main(){
     // 是否可视化
-    int flag = 1;
-    int flag2 = 1;
+    int flag = 0;
+    int flag2 = 0;
     // 计算源点云变换矩阵
     Eigen::Matrix4d transformation = Eigen::Matrix4d::Identity();
 
@@ -295,36 +295,36 @@ int main(){
     }
 
 
-    // 计算边界框的短轴
-    Eigen::Vector3d src_short_axis, ref_short_axis;
-    if (src_extent.x() < src_extent.y() && src_extent.x() < src_extent.z()) {
-        src_short_axis = src_oriented_bounding_box.R_.col(0);
-    } else if (src_extent.y() < src_extent.x() && src_extent.y() < src_extent.z()) {
-        src_short_axis = src_oriented_bounding_box.R_.col(1);
-    } else {
-        src_short_axis = src_oriented_bounding_box.R_.col(2);
-    }
+    // // 计算边界框的短轴
+    // Eigen::Vector3d src_short_axis, ref_short_axis;
+    // if (src_extent.x() < src_extent.y() && src_extent.x() < src_extent.z()) {
+    //     src_short_axis = src_oriented_bounding_box.R_.col(0);
+    // } else if (src_extent.y() < src_extent.x() && src_extent.y() < src_extent.z()) {
+    //     src_short_axis = src_oriented_bounding_box.R_.col(1);
+    // } else {
+    //     src_short_axis = src_oriented_bounding_box.R_.col(2);
+    // }
 
 
-    // 计算旋转矩阵，使src短轴旋转180度
-    Eigen::Matrix3d rotation_180_short = Eigen::AngleAxisd(M_PI, src_short_axis.normalized()).toRotationMatrix();
-    transformation.block<3, 3>(0, 0) = rotation_180_short * transformation.block<3, 3>(0, 0);
-    std::cout << "变换矩阵: \n" << transformation << std::endl;
-    pcd_src->Rotate(rotation_180_short, Eigen::Vector3d(0, 0, 0));
-    src_oriented_bounding_box.Rotate(rotation_180_short, Eigen::Vector3d(0, 0, 0));
-    std::cout << "src点云已沿短轴旋转180度" << std::endl;
+    // // 计算旋转矩阵，使src短轴旋转180度
+    // Eigen::Matrix3d rotation_180_short = Eigen::AngleAxisd(M_PI, src_short_axis.normalized()).toRotationMatrix();
+    // transformation.block<3, 3>(0, 0) = rotation_180_short * transformation.block<3, 3>(0, 0);
+    // std::cout << "变换矩阵: \n" << transformation << std::endl;
+    // pcd_src->Rotate(rotation_180_short, Eigen::Vector3d(0, 0, 0));
+    // src_oriented_bounding_box.Rotate(rotation_180_short, Eigen::Vector3d(0, 0, 0));
+    // std::cout << "src点云已沿短轴旋转180度" << std::endl;
 
-    // 可视化沿短轴旋转180度后的点云和定向边界框
-    if (flag == 1) {
-        open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "沿短轴旋转180度后的点云和定向边界框可视化", 1600,1600);
-        std::cout << "沿短轴旋转180度后的点云和定向边界框可视化成功" << std::endl;
-    }
-    // 保存沿短轴旋转180度后的点云和定向边界框可视化结果
-    if (flag2 == 1) {
-        open3d::io::WritePointCloud("7-rotated_180_short_axis_src.ply", *pcd_src);
-        open3d::io::WritePointCloud("7-rotated_180_short_axis_ref.ply", *pcd_ref);
-        std::cout << "沿短轴旋转180度后的点云和定向边界框结果保存成功" << std::endl;
-    }
+    // // 可视化沿短轴旋转180度后的点云和定向边界框
+    // if (flag == 1) {
+    //     open3d::visualization::DrawGeometries({pcd_src, pcd_ref, std::make_shared<open3d::geometry::OrientedBoundingBox>(src_oriented_bounding_box), std::make_shared<open3d::geometry::OrientedBoundingBox>(ref_oriented_bounding_box)}, "沿短轴旋转180度后的点云和定向边界框可视化", 1600,1600);
+    //     std::cout << "沿短轴旋转180度后的点云和定向边界框可视化成功" << std::endl;
+    // }
+    // // 保存沿短轴旋转180度后的点云和定向边界框可视化结果
+    // if (flag2 == 1) {
+    //     open3d::io::WritePointCloud("7-rotated_180_short_axis_src.ply", *pcd_src);
+    //     open3d::io::WritePointCloud("7-rotated_180_short_axis_ref.ply", *pcd_ref);
+    //     std::cout << "沿短轴旋转180度后的点云和定向边界框结果保存成功" << std::endl;
+    // }
 
 
     // ICP精配准
@@ -367,8 +367,8 @@ int main(){
     }
     // 保存ICP精配准结果
     if (flag2 == 1) {
-        open3d::io::WritePointCloud("8-icp_result_src.ply", *pcd_src);
-        open3d::io::WritePointCloud("8-icp_result_ref.ply", *pcd_ref);
+        open3d::io::WritePointCloud("8-icp2_result_src.ply", *pcd_src);
+        open3d::io::WritePointCloud("8-icp2_result_ref.ply", *pcd_ref);
         std::cout << "ICP精配准结果保存成功" << std::endl;
     }
 
